@@ -13,15 +13,17 @@ const createPatient = async (req, res) => {
       genero,
       direccion,
       telefono,
-      antecedentesMedicos,
+      password
     } = req.body;
 
     // Crear una nueva instancia de paciente
+    const passwordEncrypted = await Patient.encryptPassword(password)
     const nuevoPaciente = new Patient({
       picture:
         "https://static.wikia.nocookie.net/doblaje/images/a/a4/Sylvester_Stallone_2012.jpg/revision/latest/thumbnail/width/360/height/450?cb=20160707221334&path-prefix=es",
       nombre,
       apellido,
+      password: passwordEncrypted,
       emergencia_asignada: "",
       edad,
       eps,
@@ -29,7 +31,7 @@ const createPatient = async (req, res) => {
       genero,
       direccion,
       telefono,
-      antecedentesMedicos,
+      antecedentesMedicos: "",
       historialMedico: [],
     });
 
