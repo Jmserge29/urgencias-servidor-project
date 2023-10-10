@@ -33,7 +33,7 @@ const patientSchema = Schema(
       required: true,
     },
     identificacion: {
-      type: Number,
+      type: String,
       required: true,
     },
     password: {

@@ -19,10 +19,10 @@ const createPatient = async (req, res) => {
     // Crear una nueva instancia de paciente
     const nuevoPaciente = new Patient({
       picture:
-        "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png",
+        "https://static.wikia.nocookie.net/doblaje/images/a/a4/Sylvester_Stallone_2012.jpg/revision/latest/thumbnail/width/360/height/450?cb=20160707221334&path-prefix=es",
       nombre,
       apellido,
-      emergencia_asignada: null,
+      emergencia_asignada: "",
       edad,
       eps,
       identificacion,
@@ -132,11 +132,42 @@ const deletePatientById = async (req, res) => {
   }
 };
 
+const signPatient = async (req, res) => {
+  try {
+    const { identificacion, password } = req.body;
+    // Buscar al doctor por su email en la base de datos
+    const paciente = await Patient.findOne({ identificacion });
+    
+    if (!paciente) {
+        return res.status(404).json({ error: "Credenciales Incorrectas" });
+    }
+    
+    // Verificar la contraseña ingresada con la contraseña almacenada en la base de datos
+    const isPasswordValid = await Patient.comparePassword(password, paciente.password);
+    
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Unauthorized!" });
+    }
+
+    // Generar un token de autenticación
+    const token = jwt.sign({ id: paciente._id }, process.env.SECRET_KEY_TOKEN, {
+      expiresIn: 24 * 60 * 60,
+    });
+
+    // Enviar el token en la respuesta
+    return res.status(200).json({ token , paciente});
+  } catch (error) {
+    console.error("Error en el inicio de sesión:", error);
+    return res.status(500).json({ error: "Error interno del servidor." });
+  }
+};
+
 
 export default {
     getAllPatients,
     createPatient,
     getPatientById,
     editPatientById,
-    deletePatientById
+    deletePatientById,
+    signPatient
 }
