@@ -25,3 +25,6 @@ app.listen(process.env.PORT || 8089, async()=> {
     console.log(`The server is running in the Port ${process.env.PORT}, Hellow Dev ${time}`)
 })
 
+app.use("/", (req, res)=>{
+    res.send(`Hey Dev!, the server is running ${time}`)
+})

@@ -2,11 +2,11 @@ import Doctor from "../Models/Doctor.js";
 import jwt from "jsonwebtoken";
 
 const signInDoctor = async (req, res) => {
-  const { email, password } = req.body;
-
   try {
+    const { correo, password } = req.body;
     // Buscar al doctor por su email en la base de datos
-    const doctor = await Doctor.findOne({ email: email });
+    console.log("hey");
+    const doctor = await Doctor.findOne({ correo });
 
     if (!doctor) {
       return res.status(404).json({ error: "Credenciales Incorrectas" });
@@ -21,7 +21,7 @@ const signInDoctor = async (req, res) => {
 
     // Generar un token de autenticación
     const token = jwt.sign({ id: doctor._id }, process.env.SECRET_KEY_TOKEN, {
-      expiresIn: 24*60*60,
+      expiresIn: 24 * 60 * 60,
     });
 
     // Enviar el token en la respuesta
