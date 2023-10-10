@@ -9,14 +9,14 @@ const signInDoctor = async (req, res) => {
     const doctor = await Doctor.findOne({ email });
 
     if (!doctor) {
-      return res.status(404).json({ error: "Doctor no encontrado." });
+      return res.status(404).json({ error: "Credenciales Incorrectas" });
     }
 
     // Verificar la contraseña ingresada con la contraseña almacenada en la base de datos
     const isPasswordValid = await doctor.comparePassword(password);
 
     if (!isPasswordValid) {
-      return res.status(401).json({ error: "Contraseña incorrecta." });
+      return res.status(401).json({ error: "Credenciales Incorrectas" });
     }
 
     // Generar un token de autenticación
