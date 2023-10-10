@@ -13,7 +13,7 @@ const signInDoctor = async (req, res) => {
     }
 
     // Verificar la contraseña ingresada con la contraseña almacenada en la base de datos
-    const isPasswordValid = await doctor.comparePassword(password);
+    const isPasswordValid = await Doctor.comparePassword(password);
 
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Credenciales Incorrectas" });
