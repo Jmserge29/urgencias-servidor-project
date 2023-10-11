@@ -127,9 +127,26 @@ const assignDoctorToEmergency = async (req, res) => {
   }
 };
 
+const getEmergencyById = async (req, res) => {
+  try {
+    const emergencyId = req.params.id; 
+
+    const emergency = await Emergency.findById(emergencyId);
+
+    if (!emergency) {
+      return res.status(404).json({ error: 'Emergencia no encontrada' });
+    }
+
+    return res.status(200).json(emergency);
+  } catch (error) {
+    return res.status(500).json({ error: 'Error al buscar la emergencia por ID', details: error.message });
+  }
+};
+
 export default {
   createEmergency,
   getAllEmergencies,
   getAllUnattendedEmergencies,
   assignDoctorToEmergency,
+  getEmergencyById
 };
