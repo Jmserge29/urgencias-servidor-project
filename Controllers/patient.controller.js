@@ -1,5 +1,5 @@
 import Patient from "../Models/Patient.js";
-
+import jwt from "jsonwebtoken";
 // Controlador para crear un nuevo paciente
 const createPatient = async (req, res) => {
   try {
