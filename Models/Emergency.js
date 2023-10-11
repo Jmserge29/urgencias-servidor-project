@@ -8,12 +8,11 @@ const schemaEmergency = Schema([
       default: Date.now,
     },
     doctorAsignado: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Doctor",
-      required: true,
     },
     paciente: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Patient",
       required: true,
     },
@@ -41,7 +40,7 @@ const schemaEmergency = Schema([
     },
     clasificacion: {
       type: String,
-      enum: ["Sin atender", "Doctor asignado", "En consulta", "Atendido"],
+      enum: ["A", "B1", "B2", "C1", "C2", "PD"],
     }
   },
 ]);

@@ -4,29 +4,30 @@ import Doctor from '../Models/Doctor.js'
 import moment from 'moment';
 var time = moment().format('MMMM Do YYYY, h:mm:ss a');
 
-export const createEmergency = async (req, res) => {
+const createEmergency = async (req, res) => {
     try {
       // Validar los datos ingresados en el cuerpo de la solicitud (req.body)
-      const { doctorId, pacienteId, motivos_consulta } = req.body;
+      const { pacienteId, motivos_consulta } = req.body;
   
-      if (!doctorId || !pacienteId) {
+      if (!motivos_consulta || !pacienteId) {
         return res.status(400).json({ error: 'Se requieren los IDs del doctor y el paciente.' });
       }
   
-      // Verificar si el doctor y el paciente existen en la base de datos
-      const doctor = await Doctor.findById(doctorId);
       const paciente = await Patient.findById(pacienteId);
   
-      if (!doctor || !paciente) {
-        return res.status(404).json({ error: 'Doctor o paciente no encontrado.' });
+      if ( !paciente) {
+        return res.status(404).json({ error: 'Paciente no encontrado.' });
       }
   
       // Crear una nueva instancia de emergencia
       const nuevaEmergencia = new Emergency({
-        doctorAsignado: doctorId,
+        doctorAsignado: null,
         paciente: pacienteId,
-        
-        ...restoDatos,
+        recomendaciones: "",
+        medicamentosRecetados: "",
+        motivos_consulta: motivos_consulta,
+        tratamiento: "",
+        clasificacion: "PD",
         estado: 'Sin atender', // Estado inicial
       });
   
@@ -34,10 +35,8 @@ export const createEmergency = async (req, res) => {
       await nuevaEmergencia.save();
   
       // Asignar la emergencia al doctor y al paciente
-      doctor.emergencias.push(nuevaEmergencia);
-      paciente.emergencias.push(nuevaEmergencia);
+      paciente.emergencia_asignada =nuevaEmergencia;
   
-      await doctor.save();
       await paciente.save();
   
       return res.status(201).json({ message: 'Emergencia creada con éxito.', emergencia: nuevaEmergencia });
@@ -46,3 +45,7 @@ export const createEmergency = async (req, res) => {
       return res.status(500).json({ error: 'Error interno del servidor.' });
     }
   };
+
+  export default {
+    createEmergency
+  }

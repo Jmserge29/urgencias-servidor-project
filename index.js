@@ -6,6 +6,8 @@ import './db.js'
 import { createDoctors } from './Libs/InitialSetups.js';
 import routerPatient from './Routes/patient.routes.js'
 import routerDoctor from './Routes/doctor.routes.js'
+import routerEmergency from './Routes/emergency.routes.js'
+
 
 dotenv.config()
 
@@ -18,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: "*", credentials: true}))
 app.use("/Patient", routerPatient)
 app.use("/Doctor", routerDoctor)
+app.use("/Emergency", routerEmergency)
 
 createDoctors();
 
