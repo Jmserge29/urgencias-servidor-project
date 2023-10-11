@@ -33,7 +33,7 @@ const signInDoctor = async (req, res) => {
 
 const getAllDoctors = async (req, res) => {
   try {
-    const doctores = await Patient.find();
+    const doctores = await Doctor.find();
     return res.status(200).json({ doctores });
   } catch (error) {
     console.error("Error al obtener los doctores:", error);
