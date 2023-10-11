@@ -130,8 +130,8 @@ const assignDoctorToEmergency = async (req, res) => {
 const getEmergencyById = async (req, res) => {
   try {
     const emergencyId = req.params.id; 
-
     const emergency = await Emergency.findById(emergencyId);
+    console.log(emergency)
 
     if (!emergency) {
       return res.status(404).json({ error: 'Emergencia no encontrada' });

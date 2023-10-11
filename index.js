@@ -9,9 +9,7 @@ import routerDoctor from './Routes/doctor.routes.js'
 import routerEmergency from './Routes/emergency.routes.js'
 import routerAssistance from './Routes/assistent.routes.js'
 
-
 dotenv.config()
-
 const app = express()
 var time = moment().format('MMMM Do YYYY, h:mm:ss a');
 
