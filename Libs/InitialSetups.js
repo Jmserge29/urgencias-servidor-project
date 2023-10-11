@@ -1,3 +1,4 @@
+import Assistence from "../Models/Assistance.js";
 import Doctor from "../Models/Doctor.js";
 
 export const createDoctors = async()=> {
@@ -83,4 +84,56 @@ export const createDoctors = async()=> {
     } catch (error) {
         console.log("An erro has ocurred in the server")
     }
+}
+
+export const createAssitance = async()=> {
+  try {
+      const count = await Assistence.estimatedDocumentCount();
+      if(count > 0) return
+      const defaultAssitanceData = [
+          {
+            correo: "assistance01@test.com",
+            identificacion: "215612",
+            password: "123456789",
+            salario: 1200,
+            nombre: "Steffany",
+            turno: "Diurno",
+          },
+          {
+            correo: "assistance02@test.com",
+            identificacion: "158798",
+            password: "123456789",
+            salario: 1200,
+            nombre: "Angela",
+            turno: "Diurno",
+          },
+          {
+            correo: "assistance03@test.com",
+            identificacion: "998187",
+            password: "123456789",
+            salario: 1200,
+            nombre: "Santiago",
+            turno: "Nocturno",
+          },
+          {
+            correo: "assistance04@test.com",
+            identificacion: "878724",
+            password: "123456789",
+            salario: 1200,
+            nombre: "Camila",
+            turno: "Nocturno",
+          },
+      ];
+
+      const assistanceList = await Promise.all([defaultAssitanceData.map(async(assistance, i) => {
+          const passwordEncrypted = await Doctor.encryptPassword(assistance.password)
+          assistance.password = passwordEncrypted
+          new Assistence(assistance).save()
+      })])
+
+      console.log(assistanceList);
+      console.log("Assistance's has been created success!");
+  } catch (error) {
+      console.log("An erro has ocurred in the server")
+  }
 }

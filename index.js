@@ -3,10 +3,11 @@ import express from 'express'
 import cors from "cors";
 import moment from "moment";
 import './db.js'
-import { createDoctors } from './Libs/InitialSetups.js';
+import { createDoctors, createAssitance } from './Libs/InitialSetups.js';
 import routerPatient from './Routes/patient.routes.js'
 import routerDoctor from './Routes/doctor.routes.js'
 import routerEmergency from './Routes/emergency.routes.js'
+import routerAssistance from './Routes/assistent.routes.js'
 
 
 dotenv.config()
@@ -21,8 +22,10 @@ app.use(cors({ origin: "*", credentials: true}))
 app.use("/Patient", routerPatient)
 app.use("/Doctor", routerDoctor)
 app.use("/Emergency", routerEmergency)
+app.use("/Assistance", routerAssistance)
 
 createDoctors();
+createAssitance();
 
 app.listen(process.env.PORT || 8089, async()=> {
     console.log(`The server is running in the Port ${process.env.PORT}, Hellow Dev ${time}`)

@@ -1,8 +1,5 @@
 import Emergency from '../Models/Emergency.js'
 import Patient from '../Models/Patient.js'
-import Doctor from '../Models/Doctor.js'
-import moment from 'moment';
-var time = moment().format('MMMM Do YYYY, h:mm:ss a');
 
 const createEmergency = async (req, res) => {
     try {
@@ -46,6 +43,28 @@ const createEmergency = async (req, res) => {
     }
   };
 
+  const getAllEmergencies = async (req, res) => {
+    try {
+      const emergencies = await Emergency.find();
+  
+      return res.status(200).json(emergencies);
+    } catch (error) {
+      return res.status(500).json({ error: 'Error al obtener las emergencias', details: error.message });
+    }
+  };
+
+  const getAllUnattendedEmergencies = async (req, res) => {
+    try {
+      const unattendedEmergencies = await Emergency.find({ estado: 'Sin atender' });
+  
+      return res.status(200).json(unattendedEmergencies);
+    } catch (error) {
+      return res.status(500).json({ error: 'Error al obtener las emergencias sin atender', details: error.message });
+    }
+  };
+
   export default {
-    createEmergency
+    createEmergency,
+    getAllEmergencies,
+    getAllUnattendedEmergencies
   }
