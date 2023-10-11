@@ -68,11 +68,9 @@ const getAllPatients = async (req, res) => {
 
 // Controlador para obtener un paciente por ID
 const getPatientById = async (req, res) => {
-  try {
-    const { pacienteId } = req.params; // Obtiene el ID del parámetro de la URL
-
-    const paciente = await Patient.findById(pacienteId);
-
+  try {    
+    const paciente = await Patient.findById(req.params.id);
+    console.log(paciente)
     if (!paciente) {
       return res.status(404).json({ error: "Paciente no encontrado." });
     }
