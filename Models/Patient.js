@@ -29,7 +29,6 @@ const patientSchema = Schema(
     },
     genero: {
       type: String,
-      enum: ["Masculino", "Femenino", "Otro"],
       required: true,
     },
     identificacion: {

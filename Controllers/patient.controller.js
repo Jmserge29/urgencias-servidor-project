@@ -3,47 +3,56 @@ import Patient from "../Models/Patient.js";
 // Controlador para crear un nuevo paciente
 const createPatient = async (req, res) => {
   try {
-    // Obtener datos del paciente desde el cuerpo de la solicitud (req.body)
     const {
       nombre,
       apellido,
-      eps,
       edad,
+      eps,
       identificacion,
       genero,
       direccion,
       telefono,
-      password
+      password,
     } = req.body;
 
-    // Crear una nueva instancia de paciente
-    const passwordEncrypted = await Patient.encryptPassword(password)
+    // Verificar si los campos requeridos están presentes en el cuerpo de la solicitud
+    if (!nombre || !apellido) {
+      return res.status(400).json({ error: 'Faltan datos requeridos.' });
+    }
+
+    const pacienteExistente = await Patient.findOne({ identificacion });
+
+    if (pacienteExistente) {
+      return res.status(400).json({ error: 'Ya existe un paciente con la misma identificación.' });
+    }
+
+    // Asegúrate de encriptar la contraseña antes de guardarla
+    const passwordEncrypted = await Patient.encryptPassword(password);
+
     const nuevoPaciente = new Patient({
-      picture:
-        "https://static.wikia.nocookie.net/doblaje/images/a/a4/Sylvester_Stallone_2012.jpg/revision/latest/thumbnail/width/360/height/450?cb=20160707221334&path-prefix=es",
+      picture: "https://lippianfamilydentistry.net/wp-content/uploads/2015/11/user-default.png",
       nombre,
       apellido,
-      password: passwordEncrypted,
-      emergencia_asignada: "",
       edad,
       eps,
       identificacion,
       genero,
       direccion,
       telefono,
+      password: passwordEncrypted,
       antecedentesMedicos: "",
+      emergencia_asignada: null,
       historialMedico: [],
     });
 
     await nuevoPaciente.save();
 
-    return res
-      .status(201)
-      .json({ message: "Paciente creado con éxito.", paciente: nuevoPaciente });
+    return res.status(201).json({ message: "Paciente creado con éxito.", paciente: nuevoPaciente });
   } catch (error) {
     console.error("Error al crear el paciente:", error);
     return res.status(500).json({ error: "Error interno del servidor." });
   }
+
 };
 
 // Controlador para obtener todos los pacientes
