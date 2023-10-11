@@ -16,7 +16,7 @@ var time = moment().format('MMMM Do YYYY, h:mm:ss a');
 //App uses
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: "http://localhost:5173", credentials: true}))
+app.use(cors({ origin: "https://urgencias-clinica-project.vercel.app", credentials: true}))
 app.use("/Patient", routerPatient)
 app.use("/Doctor", routerDoctor)
 app.use("/Emergency", routerEmergency)
