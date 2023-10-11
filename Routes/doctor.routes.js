@@ -2,7 +2,7 @@ import { Router } from "express";
 import doctorCtrl from "../Controllers/doctor.controller.js";
 const router= Router()
 
-router.get("/getDoctors",)
+router.get("/getAllDoctors", doctorCtrl.getAllDoctors)
 router.post("/createDoctor",)
 router.post("/signInDoctor", doctorCtrl.signInDoctor)
 router.put("/UpdateDoctor/:id",)
