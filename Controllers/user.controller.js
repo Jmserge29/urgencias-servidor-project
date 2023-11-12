@@ -32,11 +32,11 @@ const getUserById = async (req, res) => {
 const signIn = async (req, res) => {
   try {
     const { identificacion, password } = req.body;
-    // Buscar al doctor por su email en la base de datos
+    // Buscar al usuario por su email en la base de datos
     const user = await User.findOne({ identificacion });
     
     if (!user) {
-        return res.status(404).json({ error: "Credenciales Incorrectas" });
+        return res.status(404).json({ error: `Credenciales Incorrectas ${identificacion} ${password}` });
     }
 
     // Verificar la contraseña ingresada con la contraseña almacenada en la base de datos
