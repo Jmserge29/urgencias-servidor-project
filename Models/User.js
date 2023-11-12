@@ -1,15 +1,23 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcryptjs";
-
-const patientSchema = Schema(
+const userSchema = Schema([
   {
+    // Propiedades Básicas Usurio
     picture: {
       type: String,
       required: true,
     },
-    emergencia_asignada: {
-      type: Schema.Types.ObjectId,
-      ref: "Emergency",
+    identificacion: {
+      type: Number,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
     },
     nombre: {
       type: String,
@@ -23,33 +31,23 @@ const patientSchema = Schema(
       type: Number,
       required: true,
     },
-    eps: {
-      type: String,
-      required: true,
-    },
-    genero: {
-      type: String,
-      required: true,
-    },
-    identificacion: {
-      type: String,
-      required: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    direccion: {
-      type: String,
-      required: false,
-    },
     telefono: {
       type: String,
       required: true,
     },
-    antecedentesMedicos: {
+    role: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Role",
+      },
+    ],
+    // Propiedades de Paciente
+    emergencia_asignada: {
+      type: Schema.Types.ObjectId,
+      ref: "Emergency",
+    },
+    eps: {
       type: String,
-      required: false,
     },
     historialMedico: [
       {
@@ -71,21 +69,42 @@ const patientSchema = Schema(
         },
       },
     ],
+    // Propiedades de Doctor
+    especialidad: {
+      type: String,
+    },
+    consultorio: {
+      type: String,
+    },
+    horario: {
+      type: String,
+    },
+    salario: {
+      type: Number,
+    },
+    emergencias_asignadas: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Emergency",
+      },
+    ],
+    pacientes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Patient",
+      },
+    ],
   },
-  {
-    timestamps: true,
-    versionkey: false,
-  }
-);
+]);
 
 // Encrypt password the User
-patientSchema.statics.encryptPassword = async (password) => {
+userSchema.statics.encryptPassword = async (password) => {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(password, salt);
 };
 // Comparer Passwords the User
-patientSchema.statics.comparePassword = async (password, reveicedPassword) => {
+userSchema.statics.comparePassword = async (password, reveicedPassword) => {
   return await bcrypt.compare(password, reveicedPassword);
 };
 
-export default model("Patient", patientSchema);
+export default model("User", userSchema);

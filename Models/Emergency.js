@@ -9,21 +9,19 @@ const schemaEmergency = Schema([
     },
     doctorAsignado: {
       type: Schema.Types.ObjectId,
-      ref: "Doctor",
+      ref: "User",
     },
     paciente: {
       type: Schema.Types.ObjectId,
-      ref: "Patient",
+      ref: "User",
       required: true,
     },
-    recomendaciones: {
-      type: String,
-      required: false,
-    },
-    medicamentosRecetados: {
-      type: String,
-      required: false,
-    },
+    medicamentosRecetados: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Medicine",
+      },
+    ],
     motivos_consulta: {
       type: String,
       required: true,
@@ -32,16 +30,12 @@ const schemaEmergency = Schema([
       type: String,
       required: false,
     },
-    estado: {
+    clasificacion: {
       type: String,
-      enum: ["Sin atender", "Doctor asignado", "En consulta", "Atendido"],
+      enum: ["Sin atender", "Admitido a Urgencias", "Dado de Alta con Tratamiento", "Dado de Alta con Cita Prioritaria"],
       default: "Sin atender",
       required: true,
     },
-    clasificacion: {
-      type: String,
-      enum: ["A", "B1", "B2", "C1", "C2", "PD"],
-    }
   },
 ]);
 export default model("Emergency", schemaEmergency)
