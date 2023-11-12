@@ -33,38 +33,32 @@ const signIn = async (req, res) => {
   try {
     const { identificacion, password } = req.body;
     // Buscar al doctor por su email en la base de datos
-    const paciente = await Patient.findOne({ identificacion });
+    const user = await User.findOne({ identificacion });
     
-    if (!paciente) {
+    if (!user) {
         return res.status(404).json({ error: "Credenciales Incorrectas" });
     }
-    
+
     // Verificar la contraseña ingresada con la contraseña almacenada en la base de datos
-    const isPasswordValid = await Patient.comparePassword(password, paciente.password);
-    
+    const isPasswordValid = await User.comparePassword(password,user.password);
+
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Unauthorized!" });
     }
 
     // Generar un token de autenticación
-    const token = jwt.sign({ id: paciente._id }, process.env.SECRET_KEY_TOKEN, {
+    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY_TOKEN, {
       expiresIn: 24 * 60 * 60,
-    });
+    }); 
+    const perfil = await Role.findOne({_id: user.role})
 
     // Enviar el token en la respuesta
-    return res.status(200).json({ token , paciente});
+    return res.status(200).json({ token , user, perfil: perfil.role});
   } catch (error) {
     console.error("Error en el inicio de sesión:", error);
     return res.status(500).json({ error: "Error interno del servidor." });
   }
 };
-
-
-
-
-
-
-
 
 // Controlador para crear un nuevo usuario
 const createUser = async (req, res) => {
@@ -77,6 +71,7 @@ const createUser = async (req, res) => {
       nombre,
       apellido,
       edad,
+      eps,
       telefono,
       role
     } = req.body;
@@ -135,6 +130,13 @@ const createUser = async (req, res) => {
   }
 
 };
+
+
+
+
+
+
+
 
 
 // Controlador para editar los datos de un paciente por ID

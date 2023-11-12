@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcryptjs";
+
 const userSchema = Schema([
   {
     // Propiedades Básicas Usurio
@@ -102,6 +103,7 @@ userSchema.statics.encryptPassword = async (password) => {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(password, salt);
 };
+
 // Comparer Passwords the User
 userSchema.statics.comparePassword = async (password, reveicedPassword) => {
   return await bcrypt.compare(password, reveicedPassword);

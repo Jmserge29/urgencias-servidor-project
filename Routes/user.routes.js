@@ -9,7 +9,7 @@ router.get("/getUsersPatients",)
 router.get("/getUserById/:id", userCtrl.getUserById)
 
 // EndPoints Auth
-router.post("/sign-in",)
+router.post("/sign-in", userCtrl.signIn)
 router.post("/sign-up", userCtrl.createUser)
 
 // EndPoints Changes Status

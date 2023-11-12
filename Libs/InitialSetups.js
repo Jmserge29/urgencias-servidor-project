@@ -31,7 +31,7 @@ export const createUsers = async()=> {
         const defaultDoctorsData = [
             {
               picture: 'https://img.freepik.com/foto-gratis/doctor-sonriendo-estetoscopio_1154-36.jpg',
-              identificacion: 123456,
+              identificacion: "123456",
               email: 'doctor1@example.com',
               password: passwordEncrypted,
               nombre: 'Doctor',
@@ -48,7 +48,7 @@ export const createUsers = async()=> {
             },
             {
               picture: 'https://img.freepik.com/foto-gratis/doctor-sonriendo-estetoscopio_1154-36.jpg',
-              identificacion: 789012,
+              identificacion: "789012",
               email: 'doctor2@example.com',
               password: passwordEncrypted,
               nombre: 'Doctor',
@@ -65,7 +65,7 @@ export const createUsers = async()=> {
             },
             {
               picture: 'https://img.freepik.com/foto-gratis/doctor-sonriendo-estetoscopio_1154-36.jpg',
-              identificacion: 456789,
+              identificacion: "456789",
               email: 'doctor3@example.com',
               password: passwordEncrypted,
               nombre: 'Doctor',
@@ -82,7 +82,7 @@ export const createUsers = async()=> {
             },
             {
               picture: 'https://img.freepik.com/foto-gratis/doctor-sonriendo-estetoscopio_1154-36.jpg',
-              identificacion: 789123,
+              identificacion: "789123",
               email: 'doctor4@example.com',
               password: passwordEncrypted,
               nombre: 'Doctor',
@@ -99,7 +99,7 @@ export const createUsers = async()=> {
             },
             {
               picture: 'https://img.freepik.com/foto-gratis/doctor-sonriendo-estetoscopio_1154-36.jpg',
-              identificacion: 567890,
+              identificacion: "567890",
               email: 'doctor5@example.com',
               password: passwordEncrypted,
               nombre: 'Doctor',
@@ -117,8 +117,6 @@ export const createUsers = async()=> {
         ];
 
         const doctorsList = await Promise.all([defaultDoctorsData.map(async(doctor, i) => {
-            const passwordEncrypted = await User.encryptPassword(doctor.password)
-            doctor.password = passwordEncrypted
             new User(doctor).save()
         })])
 
@@ -453,7 +451,6 @@ export const createListMedicines = async () => {
         "categoria": "Antihistamínicos"
       }
     ]
-    console.log(medicines.length)
 
     const count = await Medicine.estimatedDocumentCount()
     if(count>0) return
