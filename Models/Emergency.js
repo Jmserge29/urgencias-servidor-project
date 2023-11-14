@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const schemaEmergency = Schema([
+const schemaEmergency = Schema(
   {
     hora: {
       type: Date,
@@ -37,5 +37,9 @@ const schemaEmergency = Schema([
       required: true,
     },
   },
-]);
+  {
+    timestamps: true,
+    versionkey: false,
+  }
+);
 export default model("Emergency", schemaEmergency)
