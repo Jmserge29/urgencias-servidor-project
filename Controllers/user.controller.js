@@ -22,7 +22,7 @@ const getUserById = async (req, res) => {
       return res.status(404).json({ error: "Usuario no encontrado." });
     }
 
-    return res.status(200).json({ paciente });
+    return res.status(200).json({ usuario });
   } catch (error) {
     console.error("Error al obtener el paciente por ID:", error);
     return res.status(500).json({ error: "Error interno del servidor." });
