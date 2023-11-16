@@ -1,5 +1,10 @@
 import Emergency from "../Models/Emergency.js";
-import Doctor from "../Models/User.js";
+import User from "../Models/User.js";
+import moment from 'moment';
+
+moment.locale('es'); // aca ya esta en es
+var time = moment().format('MMMM Do YYYY, h:mm:ss a');
+
 
 const createEmergency = async (req, res) => {
   try {
@@ -12,7 +17,7 @@ const createEmergency = async (req, res) => {
         .json({ error: "Se requieren los IDs del doctor y el paciente." });
     }
 
-    const paciente = await Patient.findById(pacienteId);
+    const paciente = await User.findById(pacienteId);
 
     if (!paciente) {
       return res.status(404).json({ error: "Paciente no encontrado." });
@@ -20,14 +25,13 @@ const createEmergency = async (req, res) => {
 
     // Crear una nueva instancia de emergencia
     const nuevaEmergencia = new Emergency({
+      hora: time,
       doctorAsignado: null,
       paciente: pacienteId,
-      recomendaciones: "",
-      medicamentosRecetados: "",
+      medicamentosRecetados: [],
       motivos_consulta: motivos_consulta,
       tratamiento: "",
-      clasificacion: "PD",
-      estado: "Sin atender", // Estado inicial
+      clasificacion: "Sin atender", // Estado inicial
     });
 
     // Guardar la emergencia en la base de datos
@@ -52,6 +56,7 @@ const createEmergency = async (req, res) => {
 
 const getAllEmergencies = async (req, res) => {
   try {
+    console.log(time)
     const emergencies = await Emergency.find();
 
     return res.status(200).json(emergencies);

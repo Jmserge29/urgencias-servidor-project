@@ -3,9 +3,8 @@ import { Schema, model } from "mongoose";
 const schemaEmergency = Schema(
   {
     hora: {
-      type: Date,
+      type: String,
       required: true,
-      default: Date.now,
     },
     doctorAsignado: {
       type: Schema.Types.ObjectId,
