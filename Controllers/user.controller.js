@@ -131,6 +131,35 @@ const createUser = async (req, res) => {
 
 };
 
+const agregarEmergenciasAUsuario = async (req, res) => {
+  const { id } = req.params;
+  const {emergencias } = req.body;
+
+  try {
+    // Busca al usuario por su ID
+    const usuario = await Usuario.findById(id);
+
+    // Si el usuario no existe, retorna un mensaje de error
+    if (!usuario) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+
+    // Filtra emergencias duplicadas
+    const emergenciasNuevas = emergencias.filter((emergenciaId) => !usuario.emergencias_asignadas.includes(emergenciaId));
+
+    // Agrega las nuevas emergencias al usuario
+    usuario.emergencias_asignadas = usuario.emergencias_asignadas.concat(emergenciasNuevas);
+
+    // Guarda el usuario actualizado en la base de datos
+    await usuario.save();
+
+    res.status(200).json({ mensaje: 'Emergencias asignadas correctamente' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error interno del servidor' });
+  }
+};
+
 
 
 
@@ -142,7 +171,7 @@ const createUser = async (req, res) => {
 // Controlador para editar los datos de un paciente por ID
 const editUserById = async (req, res) => {
   try {
-    const { pacienteId } = req.params; // Obtiene el ID del parámetro de la URL
+    const { id } = req.params; // Obtiene el ID del parámetro de la URL
     const {
       nombre,
       apellido,
@@ -153,9 +182,9 @@ const editUserById = async (req, res) => {
       antecedentesMedicos,
     } = req.body;
 
-    // Consulta la base de datos para encontrar el paciente por su ID y actualizar sus datos
-    const paciente = await Patient.findByIdAndUpdate(
-      pacienteId,
+    // Consulta la base de datos para encontrar el user por su ID y actualizar sus datos
+    const user = await Patient.findByIdAndUpdate(
+      id,
       {
         nombre,
         apellido,
@@ -165,14 +194,14 @@ const editUserById = async (req, res) => {
         telefono,
         antecedentesMedicos,
       },
-      { new: true } // Devuelve el paciente actualizado
+      { new: true } // Devuelve el user actualizado
     );
 
-    if (!paciente) {
-      return res.status(404).json({ error: "Paciente no encontrado." });
+    if (!user) {
+      return res.status(404).json({ error: "user no encontrado." });
     }
 
-    return res.status(200).json({ paciente });
+    return res.status(200).json({ user });
   } catch (error) {
     console.error("Error al editar el paciente por ID:", error);
     return res.status(500).json({ error: "Error interno del servidor." });
