@@ -15,6 +15,7 @@ router.post("/sign-up", userCtrl.createUser)
 // EndPoints Changes Status
 router.put("/updateById/:id",)
 router.delete("/deleteById/:id",userCtrl.deleteUserById)
+router.post("/insertEmergencyByUser/:id", userCtrl.agregarEmergenciasAUsuario)
 
 
 

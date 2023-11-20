@@ -137,7 +137,7 @@ const agregarEmergenciasAUsuario = async (req, res) => {
 
   try {
     // Busca al usuario por su ID
-    const usuario = await Usuario.findById(id);
+    const usuario = await User.findById(id);
 
     // Si el usuario no existe, retorna un mensaje de error
     if (!usuario) {
@@ -235,5 +235,6 @@ export default {
     getUserById,
     editUserById,
     deleteUserById,
+    agregarEmergenciasAUsuario,
     signIn
 }
