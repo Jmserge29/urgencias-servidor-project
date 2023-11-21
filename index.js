@@ -6,6 +6,7 @@ import './db.js'
 import { createRoles, createUsers, createListMedicines } from './Libs/InitialSetups.js';
 import routerUser from './Routes/user.routes.js'
 import routerEmergency from './Routes/emergency.routes.js'
+import routerMedicine from './Routes/medicine.routes.js'
 
 dotenv.config()
 const app = express()
@@ -17,6 +18,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: "https://urgencias-clinica-project.vercel.app", credentials: true}))
 app.use("/User", routerUser)
 app.use("/Emergency", routerEmergency)
+app.use("/Medicine", routerMedicine)
+
 
 createRoles();
 createUsers();
